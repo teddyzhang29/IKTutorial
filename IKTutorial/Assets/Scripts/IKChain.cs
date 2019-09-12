@@ -20,7 +20,7 @@ namespace LH
             if (joints.Length > 0)
             {
                 joints[joints.Length - 1].isEndEffector = true;
-                joints[joints.Length - 1].useConstraint = false;
+                joints[0].useConstraint = false;
             }
         }
 
@@ -56,23 +56,22 @@ namespace LH
                 for (int i = joints.Length - 1; i > 0; i--)
                 {
                     IKJoint joint = joints[i];
-                    IKJoint parent = joints[i - 1];
                     joint.position = newPos;
                     if (i < joints.Length - 1)
                     {
                         IKJoint next = joints[i + 1];
                         joint.rotation = Quaternion.FromToRotation(Vector3.up, next.position - joint.position);
                     }
+                    IKJoint parent = joints[i - 1];
                     float distFromParentToCurrent = Vector3.Distance(parent.position, joint.position);
                     float t = parent.length / distFromParentToCurrent;
                     newPos = Vector3.Lerp(joint.position, parent.position, t);
                 }
                 joints[0].position = newPos;
-                if (joints.Length >= 2)
-                {
-                    joints[0].rotation = Quaternion.FromToRotation(Vector3.up, joints[1].position - joints[0].position);
-                }
-
+                //if (joints.Length >= 2)
+                //{
+                //    joints[0].rotation = Quaternion.FromToRotation(Vector3.up, joints[1].position - joints[0].position);
+                //}
 
                 // backward interation
                 newPos = origin;
@@ -86,6 +85,10 @@ namespace LH
                     float t = joint.length / distFromCurrentToNext;
                     newPos = Vector3.Lerp(joint.position, next.position, t);
                     joint.rotation = Quaternion.FromToRotation(Vector3.up, newPos - joint.position);
+                }
+                if (joints.Length >= 2)
+                {
+                    joints[joints.Length - 1].rotation = joints[joints.Length - 2].rotation;
                 }
                 joints[joints.Length - 1].position = newPos;
             }

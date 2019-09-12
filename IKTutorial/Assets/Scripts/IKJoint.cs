@@ -32,10 +32,10 @@ namespace LH
                 const int segmentCount = 36;
                 Gizmos.color = Color.green;
 
-                Quaternion headRotation = Quaternion.FromToRotation(Vector3.up, transform.up);
-                Vector3 heightCenter = transform.position + headRotation * Vector3.up * constrainHeight;
+                Quaternion headRotation = Quaternion.FromToRotation(Vector3.down, -transform.up);
+                Vector3 heightCenter = transform.position - transform.up * constrainHeight;
 
-                Quaternion rotationPerSegment = Quaternion.AngleAxis(360f / segmentCount, transform.up);
+                Quaternion rotationPerSegment = Quaternion.AngleAxis(360f / segmentCount, -transform.up);
                 Vector3 point = heightCenter + transform.forward * constrainHeight * Mathf.Tan(Mathf.Deg2Rad * constrainAngle);
                 for (int i = 0; i < segmentCount; i++)
                 {
@@ -53,7 +53,7 @@ namespace LH
             }
         }
 
-        private Vector3 Constraint(Vector3 targetPosition)
+        public Vector3 Constraint(Vector3 targetPosition)
         {
             if (useConstraint)
             {
