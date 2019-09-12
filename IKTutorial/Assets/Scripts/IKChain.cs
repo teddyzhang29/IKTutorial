@@ -6,9 +6,20 @@ namespace LH
     {
         public float length;
         public IKJoint[] joints;
+        public FABRIK fabrik;
 
-        public void Init()
+        public bool useConstraint
         {
+            get => fabrik.useConstraint;
+        }
+
+        public void Init(FABRIK fabrik)
+        {
+            this.fabrik = fabrik;
+            for (int i = 0; i < joints.Length; i++)
+            {
+                joints[i].Init(this);
+            }
             for (int i = 0; i < joints.Length - 1; i++)
             {
                 IKJoint joint = joints[i];
@@ -63,9 +74,10 @@ namespace LH
                         joint.rotation = Quaternion.FromToRotation(Vector3.up, next.position - joint.position);
                     }
                     IKJoint parent = joints[i - 1];
-                    float distFromParentToCurrent = Vector3.Distance(parent.position, joint.position);
+                    Vector3 constrainedPosition = joint.Constraint(parent.position);
+                    float distFromParentToCurrent = Vector3.Distance(constrainedPosition, joint.position);
                     float t = parent.length / distFromParentToCurrent;
-                    newPos = Vector3.Lerp(joint.position, parent.position, t);
+                    newPos = Vector3.Lerp(joint.position, constrainedPosition, t);
                 }
                 joints[0].position = newPos;
                 //if (joints.Length >= 2)

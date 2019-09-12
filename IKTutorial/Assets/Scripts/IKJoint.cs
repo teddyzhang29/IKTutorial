@@ -19,11 +19,17 @@ namespace LH
         public float length;
         public bool isEndEffector;
         public Vector3 solvePosition;
+        public IKChain ikChain;
 
         [Space]
         public bool useConstraint = true;
         public float constrainHeight = 2;
         public float constrainAngle = 30;
+
+        public void Init(IKChain ikChain)
+        {
+            this.ikChain = ikChain;
+        }
 
         private void OnDrawGizmos()
         {
@@ -55,7 +61,7 @@ namespace LH
 
         public Vector3 Constraint(Vector3 targetPosition)
         {
-            if (useConstraint)
+            if (useConstraint && ikChain.useConstraint)
             {
                 Vector3 toTarget = targetPosition - position;
                 Vector3 up = Vector3.Project(toTarget, transform.up);

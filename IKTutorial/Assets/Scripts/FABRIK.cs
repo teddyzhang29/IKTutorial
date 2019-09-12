@@ -4,6 +4,7 @@ namespace LH
 {
     public class FABRIK : MonoBehaviour
     {
+        public bool useConstraint = true;
         public Transform target;
         public IKChain[] chains;
 
@@ -16,7 +17,7 @@ namespace LH
         {
             foreach (var chain in chains)
             {
-                chain.Init();
+                chain.Init(this);
             }
         }
 
