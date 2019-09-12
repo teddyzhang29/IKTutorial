@@ -192,6 +192,11 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 252211428}
+    - target: {fileID: 6719119535918711974, guid: 249c4e470ff25c94fa963c7232259406,
+        type: 3}
+      propertyPath: useConstraint
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6719119534535033209, guid: 249c4e470ff25c94fa963c7232259406,
         type: 3}
       propertyPath: constrainAngle

@@ -52,7 +52,7 @@ namespace LH
                         IKJoint parent = joints[i - 1];
                         float distFromParentToTarget = Vector3.Distance(parent.position, target);
                         float t = parent.length / distFromParentToTarget;
-                        joint.position = Vector3.Lerp(parent.position, target, t);
+                        joint.position = Vector3.LerpUnclamped(parent.position, target, t);
                     }
                     joint.rotation = Quaternion.FromToRotation(Vector3.up, target - joint.position);
                 }
@@ -77,7 +77,7 @@ namespace LH
                     Vector3 constrainedPosition = joint.Constraint(parent.position);
                     float distFromParentToCurrent = Vector3.Distance(constrainedPosition, joint.position);
                     float t = parent.length / distFromParentToCurrent;
-                    newPos = Vector3.Lerp(joint.position, constrainedPosition, t);
+                    newPos = Vector3.LerpUnclamped(joint.position, constrainedPosition, t);
                 }
                 joints[0].position = newPos;
                 //if (joints.Length >= 2)
@@ -95,7 +95,7 @@ namespace LH
 
                     float distFromCurrentToNext = Vector3.Distance(joint.position, next.position);
                     float t = joint.length / distFromCurrentToNext;
-                    newPos = Vector3.Lerp(joint.position, next.position, t);
+                    newPos = Vector3.LerpUnclamped(joint.position, next.position, t);
                     joint.rotation = Quaternion.FromToRotation(Vector3.up, newPos - joint.position);
                 }
                 if (joints.Length >= 2)
